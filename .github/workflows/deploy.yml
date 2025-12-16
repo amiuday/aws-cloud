@@ -8,16 +8,37 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Deploy S3 Stack
+      - name: Smart delete CloudFormation stack
+        shell: bash
+        run: |
+          STACK_NAME="demo-s3-stack"
+          REGION="eu-north-1"
+
+          STATUS=$(aws cloudformation describe-stacks \
+            --stack-name $STACK_NAME \
+            --region $REGION \
+            --query "Stacks[0].StackStatus" \
+            --output text 2>/dev/null || echo "NOT_FOUND")
+
+          echo "Stack status: $STATUS"
+
+          if [ "$STATUS" = "ROLLBACK_COMPLETE" ]; then
+            aws cloudformation delete-stack \
+              --stack-name $STACK_NAME \
+              --region $REGION
+
+            aws cloudformation wait stack-delete-complete \
+              --stack-name $STACK_NAME \
+              --region $REGION
+          fi
+
+      - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
             --stack-name demo-s3-stack \
-            --template-file templates/s3.yaml \
-            --parameter-overrides Env=dev \
+            --template-file cloudformation/templates/s3.yaml \
+            --region eu-north-1 \
             --capabilities CAPABILITY_NAMED_IAM
-
