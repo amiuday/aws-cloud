@@ -10,7 +10,7 @@ Resources:
   MyBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "my-demo-${Env}-bucket"
+      BucketName: !Sub "ukbabu-demo-${Env}-bucket"
 
 Outputs:
   BucketName:
