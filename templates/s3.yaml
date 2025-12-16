@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: S3 bucket example
+
+Parameters:
+  Env:
+    Type: String
+    Default: dev
+
+Resources:
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "my-demo-${Env}-bucket"
+
+Outputs:
+  BucketName:
+    Value: !Ref MyBucket
+

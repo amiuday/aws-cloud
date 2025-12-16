@@ -1,0 +1,23 @@
+name: Deploy CloudFormation Stack
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy S3 Stack
+        run: |
+          aws cloudformation deploy \
+            --stack-name demo-s3-stack \
+            --template-file templates/s3.yaml \
+            --parameter-overrides Env=dev \
+            --capabilities CAPABILITY_NAMED_IAM
+
