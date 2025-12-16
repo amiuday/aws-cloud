@@ -15,4 +15,3 @@ Resources:
 Outputs:
   BucketName:
     Value: !Ref MyBucket
-
