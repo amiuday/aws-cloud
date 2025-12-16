@@ -39,6 +39,6 @@ jobs:
         run: |
           aws cloudformation deploy \
             --stack-name demo-s3-stack \
-            --template-file cloudformation/templates/s3.yaml \
+            --template-file templates/s3.yaml \
             --region eu-north-1 \
             --capabilities CAPABILITY_NAMED_IAM
