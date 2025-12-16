@@ -1,5 +1,6 @@
 # aws-cloud
 
+
 What is a CloudFormation Stack?
 
 A stack is a collection of AWS resources that are created, updated, and deleted together.
