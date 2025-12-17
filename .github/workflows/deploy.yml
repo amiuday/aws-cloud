@@ -25,13 +25,9 @@ jobs:
             --stack-name $STACK_NAME \
             --region $REGION
 
-          aws cloudformation create-stack \
-            --stack-name $STACK_NAME \
-            --template-body file://templates/s3.yaml \
-            --region $REGION \
-            --parameters ParameterKey=Env,ParameterValue=dev
+          aws cloudformation delete-stack \
+            --stack-name demo-s3-stack
 
-
-          aws cloudformation describe-stacks \
-            --stack-name $STACK_NAME \
-            --query "Stacks[0].Outputs"
+          aws cloudformation wait stack-delete-complete \
+            --stack-name demo-s3-stack \
+            --region $REGION
