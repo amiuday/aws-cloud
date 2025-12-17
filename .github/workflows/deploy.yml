@@ -18,10 +18,11 @@ jobs:
           STACK_NAME="s3-dev-stack"
           REGION="eu-north-1"
 
-        aws cloudformation detect-stack-drift \
-          --stack-name $STACK_NAME
-
-
+          aws cloudformation create-stack \
+            --stack-name $STACK_NAME \
+            --region $REGION \
+            --template-body file://templates/s3.yaml \
+            --parameters file://params/dev.json
 
 
 
