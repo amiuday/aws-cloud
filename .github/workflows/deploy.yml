@@ -27,5 +27,5 @@ jobs:
 
           aws cloudformation describe-change-set \
             --stack-name $STACK_NAME \
-            --change-set-name create-s3-bucket \
+            --change-set-name create-s3-dev-bucket \
             --region eu-north-1
