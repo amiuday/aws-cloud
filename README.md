@@ -17,6 +17,7 @@ Delete stack → everything goes away together
 
 📌 Stack is the owner of the resources.
 
+
 =====================================================================================================================
 
 Template = Desired State
