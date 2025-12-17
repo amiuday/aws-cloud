@@ -387,15 +387,138 @@ Cleanup	delete-stack
 If you know these → you know CloudFormation basics
 
 =====================================================================================================================
+🧱 STEP 1: Create parameterized s3.yaml
 
+Edit or create:
+
+templates/s3.yaml
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Parameterized S3 bucket for multiple environments
+
+Parameters:
+  Env:
+    Type: String
+    Description: Deployment environment
+    AllowedValues:
+      - dev
+      - prod
+    Default: dev
+
+Resources:
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "my-app-${Env}-bucket"
+
+Outputs:
+  BucketName:
+    Description: Name of the S3 bucket
+    Value: !Ref MyBucket
+
+Using parameter in resource
+BucketName: !Sub "my-app-${Env}-bucket"
+
+
+If:
+
+Env = dev → my-app-dev-bucket
+
+Env = prod → my-app-prod-bucket
+
+📌 This is environment isolation
+
+🟢 STEP 2: Create DEV stack
+
+Since stack is deleted, create fresh.
+
+aws cloudformation create-stack \
+  --stack-name s3-dev-stack \
+  --template-body file://templates/s3.yaml \
+  --parameters ParameterKey=Env,ParameterValue=dev
+
+Verify output
+aws cloudformation describe-stacks \
+  --stack-name s3-dev-stack \
+  --query "Stacks[0].Outputs"
+
+🟡 STEP 3: Create PROD stack (same template!)
+aws cloudformation create-stack \
+  --stack-name s3-prod-stack \
+  --template-body file://templates/s3.yaml \
+  --parameters ParameterKey=Env,ParameterValue=prod
+
+
+✔️ Two stacks
+✔️ Same template
+✔️ Different resources
+
+=====================================================================================================================
+🎯 Goal
+
+Instead of this 👇 (ugly & error-prone):
+
+--parameters ParameterKey=Env,ParameterValue=dev
+
+
+We want this 👇 (clean & reusable):
+
+--parameters file://params/dev.json  
 
 =====================================================================================================================
 
-
-=====================================================================================================================
-
+📁 STEP 1: Create params folder
 
 
+In your repo root:
+
+cloudformation/
+├── templates/
+│   └── s3.yaml
+└── params/
+    ├── dev.json
+    └── prod.json
+
+🧱 STEP 2: Create dev.json
+
+params/dev.json
+
+[
+  {
+    "ParameterKey": "Env",
+    "ParameterValue": "dev"
+  }
+]
+
+🧱 STEP 3: Create prod.json
+
+params/prod.json
+
+[
+  {
+    "ParameterKey": "Env",
+    "ParameterValue": "prod"
+  }
+]
+📌 JSON must be an array, not an object.
+
+🟢 STEP 4: Create stack using parameters JSON
+DEV stack
+aws cloudformation create-stack \
+  --stack-name s3-dev-stack \
+  --template-body file://templates/s3.yaml \
+  --parameters file://params/dev.json
+
+PROD stack
+aws cloudformation create-stack \
+  --stack-name s3-prod-stack \
+  --template-body file://templates/s3.yaml \
+  --parameters file://params/prod.json
+
+
+✔️ Same template
+✔️ Different param files
+✔️ Clean commands
 =====================================================================================================================
 
 
