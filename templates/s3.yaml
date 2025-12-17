@@ -4,6 +4,10 @@ Description: S3 bucket example
 Parameters:
   Env:
     Type: String
+    Description: Deployment environment
+    AllowedValues:
+      - dev
+      - prod
     Default: dev
 
 Resources:
