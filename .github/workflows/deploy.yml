@@ -15,18 +15,17 @@ jobs:
       - name: Update CloudFormation stack
         shell: bash
         run: |
-          STACK_NAME="s3-prod-stack"
+          STACK_NAME="s3-dev-stack"
           REGION="eu-north-1"
 
           aws cloudformation create-change-set \
             --stack-name $STACK_NAME \
-            --change-set-name create-s3-bucket \
+            --change-set-name create-s3-dev-bucket \
             --change-set-type CREATE \
             --template-body file://templates/s3.yaml \
             --parameters file://params/dev.json
 
           aws cloudformation describe-change-set \
-            --stack-name s3-prod-stack \
+            --stack-name $STACK_NAME \
             --change-set-name create-s3-bucket \
             --region eu-north-1
-
