@@ -520,7 +520,67 @@ aws cloudformation create-stack \
 ✔️ Different param files
 ✔️ Clean commands
 =====================================================================================================================
+🔹 What a Change Set REALLY is
 
+A Change Set is a PREVIEW (dry run) of what CloudFormation would do if you apply a create or update.
+
+Think of it as:
+
+“Tell me what will change BEFORE you actually change it.”
+
+Best Mental Model (remember this)
+Action	What it does
+create-stack	Creates resources immediately
+update-stack	Updates resources immediately
+create-change-set	Shows planned changes (no action yet)
+execute-change-set	Actually applies those changes
+
+📌 Change Set = Plan, not Apply
+
+✅ Correct way to preview a NEW stack
+
+Use create-change-set with type CREATE.
+
+aws cloudformation create-change-set \
+  --stack-name prod-v2-stack \
+  --change-set-name prod-v2-preview \
+  --change-set-type CREATE \
+  --template-body file://templates/s3.yaml \
+  --parameters file://params/prod.json
+
+
+📌 Important:
+
+No resources are created
+
+Stack is NOT active yet
+
+You only get a preview
+
+🔍 Review the plan
+aws cloudformation describe-change-set \
+  --stack-name prod-v2-stack \
+  --change-set-name prod-v2-preview
+
+
+You’ll see:
+
+All resources to be created
+
+Their properties
+
+Replacement info
+
+
+🟢 Only after approval → execute
+aws cloudformation execute-change-set \
+  --stack-name prod-v2-stack \
+  --change-set-name prod-v2-preview
+
+
+Now:
+✅ Stack is created
+✅ Resources are deployed
 
 
 =====================================================================================================================
