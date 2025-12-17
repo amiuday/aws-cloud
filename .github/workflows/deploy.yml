@@ -25,4 +25,8 @@ jobs:
             --template-body file://templates/s3.yaml \
             --parameters file://params/dev.json
 
+          aws cloudformation describe-change-set \
+            --stack-name s3-prod-stack \
+            --change-set-name create-s3-bucket \
+            --region eu-north-1
 
