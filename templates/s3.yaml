@@ -11,6 +11,11 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub "ukbabu-demo-${Env}-bucket"
+      Tags:
+        - Key: Application
+          Value: CloudFormationDemo
+        - Key: Environment
+          Value: !Ref Env
 
 Outputs:
   BucketName:
