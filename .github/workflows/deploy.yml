@@ -15,7 +15,7 @@ jobs:
       - name: Update CloudFormation stack
         shell: bash
         run: |
-          STACK_NAME="s3-dev-stack"
+          STACK_NAME="s3-prod-stack"
           REGION="eu-north-1"
 
 
@@ -23,4 +23,4 @@ jobs:
             --stack-name $STACK_NAME \
             --region $REGION \
             --template-body file://templates/s3.yaml \
-            --parameters file://params/dev.json
+            --parameters file://params/prod.json
