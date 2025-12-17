@@ -18,16 +18,10 @@ jobs:
           STACK_NAME="s3-prod-stack"
           REGION="eu-north-1"
 
+          aws cloudformation create-change-set \
+            --stack-name $STACK_NAME \
+            --change-set-name create-s3-bucket \
+            --template-body file://templates/s3.yaml \
+            --parameters file://params/dev.json
 
-          aws cloudformation delete-stack \
-            --stack-name $STACK_NAME
-
-          aws cloudformation wait stack-delete-complete \
-            --stack-name $STACK_NAME
-
-          aws cloudformation delete-stack \
-            --stack-name s3-dev-stack
-
-          aws cloudformation wait stack-delete-complete \
-            --stack-name s3-dev-stack
 
