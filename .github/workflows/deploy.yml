@@ -20,7 +20,7 @@ jobs:
 
           aws cloudformation create-stack \
             --stack-name $STACK_NAME \
-            --template-body file://template/s3.yaml \
+            --template-body file://templates/s3.yaml \
             --region $REGION
 
 
