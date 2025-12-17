@@ -14,7 +14,7 @@ Resources:
   MyBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "ukbabu-demo-${Env}-bucket"
+      BucketName: !Sub "ukb-demo-${Env}-bucket"
       Tags:
         - Key: Application
           Value: CloudFormationDemo
