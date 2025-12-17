@@ -21,6 +21,7 @@ jobs:
           aws cloudformation create-change-set \
             --stack-name $STACK_NAME \
             --change-set-name create-s3-bucket \
+            --change-set-type CREATE \
             --template-body file://templates/s3.yaml \
             --parameters file://params/dev.json
 
