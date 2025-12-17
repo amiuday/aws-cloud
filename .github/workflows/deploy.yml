@@ -18,15 +18,10 @@ jobs:
           STACK_NAME="demo-s3-stack"
           REGION="eu-north-1"
 
-          aws cloudformation delete-stack \
+          aws cloudformation create-stack \
             --stack-name $STACK_NAME \
             --region $REGION
 
-
-
-          aws cloudformation wait stack-delete-complete \
-            --stack-name $STACK_NAME \
-            --region $REGION
 
           aws cloudformation describe-stacks \
             --stack-name $STACK_NAME \
