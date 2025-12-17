@@ -584,150 +584,15 @@ Now:
 
 
 =====================================================================================================================
-🔄 1️⃣ Stack Rollback (VERY IMPORTANT)
-What is rollback?
 
-Rollback happens when:
-
-Stack creation fails
-
-Stack update fails
-
-CloudFormation:
-👉 Automatically returns stack to last known good state
-
-
-🔹 Rollback during CREATE
-Scenario
-
-Stack creation fails halfway
-
-Result:
-
-Status → ROLLBACK_IN_PROGRESS
-
-Then → ROLLBACK_COMPLETE
-
-❌ Stack exists but has no resources
-
-📌 You must delete the stack to retry.
-
-aws cloudformation delete-stack --stack-name my-stack
-
-🔹 Rollback during UPDATE
-Scenario
-
-Update fails
-
-Result:
-
-Status → UPDATE_ROLLBACK_IN_PROGRESS
-
-Then → UPDATE_ROLLBACK_COMPLETE
-
-Meaning:
-
-Old resources are restored
-
-No partial changes remain
-
-This is huge for prod safety.
-
-🔴 Disable rollback (rare)
-
-Used only for debugging.
-
-aws cloudformation create-stack \
-  --disable-rollback
-
-
-⚠️ Never use in prod.
-
-🧠 Stack states you MUST recognize
-State	Meaning
-ROLLBACK_COMPLETE	Create failed
-UPDATE_ROLLBACK_COMPLETE	Update failed
-DELETE_FAILED	Manual fix needed
 
 
 =====================================================================================================================
-🧭 2️⃣ Drift Detection (EXTREMELY IMPORTANT)
-What is drift?
-
-Drift means:
-
-Actual AWS resources ≠ CloudFormation template
-
-Example:
-
-CFN created S3 bucket
-
-Someone manually:
-
-Changed tags
-
-Edited policy
-
-Deleted resource
-
-➡️ Stack is now DRIFTED
-
-🔍 Detect drift (CLI)
-aws cloudformation detect-stack-drift \
-  --stack-name s3-prod-stack
 
 
-Then:
-
-aws cloudformation describe-stack-drift-detection-status \
-  --stack-drift-detection-id <ID>
-
-📊 Drift status meanings
-Status	Meaning
-IN_SYNC	Everything matches
-DRIFTED	Manual changes exist
-NOT_CHECKED	Not yet run
-🔴 Why drift is dangerous
-
-CI/CD lies
-
-Next update may fail
-
-Security gaps
-
-Compliance issues
-
-🟢 Fix drift (correct way)
-
-Update template to match reality
-
-OR revert manual change
-
-Apply via change set
-
-📌 Never fix drift manually again
-
-
-🧠 How these fit together (big picture)
-Change Sets → Preview changes
-Rollback    → Auto safety net
-Drift       → Detect manual damage
-
-
-These three = production CloudFormation mastery.
 
 =====================================================================================================================
-✅ Your learning roadmap status
-Topic	Status
-Stacks & Templates	✅ Done
-Parameters & Outputs	✅ Done
-Change Sets	✅ Done
-Rollback	🔜 Now
-Drift Detection	🔜 Now
 
-🎯 Interview-ready summary
-
-“We use change sets to preview updates, rely on rollback for failure safety, and regularly run drift detection to ensure infrastructure hasn’t been modified outside CloudFormation.”
 
 
 =====================================================================================================================
