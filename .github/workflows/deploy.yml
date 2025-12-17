@@ -13,6 +13,7 @@ jobs:
 
 
       - name: Update CloudFormation stack
+        shell: bash
         run: |
           STACK_NAME="demo-s3-stack"
           REGION="eu-north-1"
