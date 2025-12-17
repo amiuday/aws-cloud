@@ -276,6 +276,120 @@ Outputs:
 
 =====================================================================================================================
 
+STEP 1: Update stack → Add tags to S3
+Edit templates/s3.yaml
+
+Add Tags under the S3 bucket.
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: S3 bucket with tags
+
+Parameters:
+  Env:
+    Type: String
+    Default: dev
+
+Resources:
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "demo-s3-${Env}"
+      Tags:
+        - Key: Application
+          Value: CloudFormationDemo
+        - Key: Environment
+          Value: !Ref Env
+
+Outputs:
+  BucketName:
+    Value: !Ref MyBucket
+
+📌 Only template change → no console changes
+
+Update stack via CLI
+aws cloudformation update-stack \
+  --stack-name demo-s3 \
+  --template-body file://templates/s3.yaml \
+  --parameters ParameterKey=Env,ParameterValue=dev
+
+
+✔️ Expected result:
+
+Stack goes to UPDATE_IN_PROGRESS
+
+Then UPDATE_COMPLETE
+
+=====================================================================================================================
+
+STEP 2: Describe stack (current state)
+Basic stack info
+aws cloudformation describe-stacks \
+  --stack-name demo-s3
+
+Clean, readable output (recommended)
+aws cloudformation describe-stacks \
+  --stack-name demo-s3 \
+  --query "Stacks[0].StackStatus"
+
+
+You should see:
+
+"UPDATE_COMPLETE"
+
+=====================================================================================================================
+📜 STEP 3: Describe stack events (VERY IMPORTANT)
+
+This shows what CFN actually did.
+
+aws cloudformation describe-stack-events \
+  --stack-name demo-s3
+
+
+Look for:
+
+UPDATE_IN_PROGRESS
+
+UPDATE_COMPLETE
+
+Resource type: AWS::S3::Bucket
+
+📌 When something fails → error is always here
+
+=====================================================================================================================
+
+🔴 STEP 4: Delete stack (cleanup)
+Delete stack
+aws cloudformation delete-stack \
+  --stack-name demo-s3
+
+Watch delete events
+aws cloudformation describe-stack-events \
+  --stack-name demo-s3
+
+
+Final state:
+
+DELETE_COMPLETE
+
+
+✔️ S3 bucket is deleted
+✔️ Stack is gone
+✔️ No orphan resources
+=====================================================================================================================
+🧠 COMMANDS YOU MUST REMEMBER (LOCK THESE 🔐)
+Purpose	Command
+Create stack	create-stack
+Update stack	update-stack
+Stack status	describe-stacks
+Debug	describe-stack-events
+Cleanup	delete-stack
+
+If you know these → you know CloudFormation basics
+
+=====================================================================================================================
+
+
+=====================================================================================================================
 
 
 =====================================================================================================================
@@ -285,10 +399,51 @@ Outputs:
 =====================================================================================================================
 
 
+
 =====================================================================================================================
 
 
+
 =====================================================================================================================
+
+
+
+=====================================================================================================================
+
+
+
+=====================================================================================================================
+
+
+
+
+=====================================================================================================================
+
+
+
+
+=====================================================================================================================
+
+
+
+
+=====================================================================================================================
+
+
+
+
+=====================================================================================================================
+
+
+
+
+=====================================================================================================================
+
+
+
+=====================================================================================================================
+
+
 
 
 =====================================================================================================================
