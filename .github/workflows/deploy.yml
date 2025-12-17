@@ -22,7 +22,7 @@ jobs:
             --stack-name $STACK_NAME
 
           aws cloudformation wait stack-delete-complete \
-            --stack-name $STACK_NAME
+            --stack-name $STACK_NAME \
             --region $REGION
 
           aws cloudformation create-stack \
