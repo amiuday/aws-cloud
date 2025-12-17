@@ -18,14 +18,11 @@ jobs:
           STACK_NAME="s3-dev-stack"
           REGION="eu-north-1"
 
-          aws cloudformation create-change-set \
+          aws cloudformation create-stack \
             --stack-name $STACK_NAME \
-            --change-set-name create-s3-dev-bucket \
-            --change-set-type CREATE \
+            --region $REGION \
             --template-body file://templates/s3.yaml \
             --parameters file://params/dev.json
 
-          aws cloudformation describe-change-set \
-            --stack-name $STACK_NAME \
-            --change-set-name create-s3-dev-bucket \
-            --region eu-north-1
+
+
