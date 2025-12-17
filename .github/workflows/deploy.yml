@@ -15,15 +15,16 @@ jobs:
       - name: Update CloudFormation stack
         shell: bash
         run: |
-          STACK_NAME="demo-s3-stack"
+          STACK_NAME="s3-dev-stack"
           REGION="eu-north-1"
 
           aws cloudformation create-stack \
             --stack-name $STACK_NAME \
             --template-body file://templates/s3.yaml \
-            --region $REGION
+            --region $REGION \
+            --parameters ParameterKey=Env,ParameterValue=dev
 
 
           aws cloudformation describe-stacks \
             --stack-name $STACK_NAME \
-            --query "Stacks[0].StackStatus"
+            --query "Stacks[0].Outputs"
