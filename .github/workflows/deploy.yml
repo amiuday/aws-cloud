@@ -21,5 +21,5 @@ jobs:
           aws cloudformation update-stack \
             --stack-name $STACK_NAME \
             --region $REGION \
-            --template-file templates/s3.yaml \
+            --template-body file://templates/s3.yaml \
             --parameters ParameterKey=Env,ParameterValue=dev
