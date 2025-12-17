@@ -19,6 +19,8 @@ Resources:
           Value: CloudFormationDemo
         - Key: Environment
           Value: !Ref Env
+        - Key: Owner
+          Value: Uday
 
 Outputs:
   BucketName:
