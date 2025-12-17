@@ -18,16 +18,9 @@ jobs:
           STACK_NAME="s3-dev-stack"
           REGION="eu-north-1"
 
-          aws cloudformation delete-stack \
-            --stack-name $STACK_NAME
 
-          aws cloudformation wait stack-delete-complete \
+          aws cloudformation create-stack \
             --stack-name $STACK_NAME \
-            --region $REGION
-
-          aws cloudformation delete-stack \
-            --stack-name demo-s3-stack
-
-          aws cloudformation wait stack-delete-complete \
-            --stack-name demo-s3-stack \
-            --region $REGION
+            --region $REGION \
+            --template-body file://templates/s3.yaml \
+            --parameters file://params/dev.json

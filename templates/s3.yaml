@@ -8,7 +8,6 @@ Parameters:
     AllowedValues:
       - dev
       - prod
-    Default: dev
 
 Resources:
   MyBucket:
